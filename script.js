@@ -72,6 +72,82 @@ function updateTimeLeft() {
         }
     }
 
+    // Weeks message (weekends remaining)
+    const weeksMessageEl = document.getElementById('weeks-message');
+    if (weeksMessageEl) {
+        const wholeWeeksLeft = Math.max(0, Math.ceil(totalWeeksRemainingExact));
+        const weekendsLeft = wholeWeeksLeft;
+        if (weekendsLeft === 0) {
+            weeksMessageEl.textContent = 'No full weekends left. Make today count.';
+        } else if (weekendsLeft === 1) {
+            weeksMessageEl.textContent = 'You have 1 more weekend to enjoy.';
+        } else {
+            weeksMessageEl.textContent = `You have ${weekendsLeft} more weekends to enjoy.`;
+        }
+
+        const weeksCard = document.querySelector('[data-card=\"weeks\"]');
+        if (weeksCard && !weeksCard.dataset.messageBound) {
+            weeksCard.addEventListener('mouseenter', () => {
+                weeksMessageEl.classList.add('is-visible');
+            });
+            weeksCard.addEventListener('mouseleave', () => {
+                weeksMessageEl.classList.remove('is-visible');
+            });
+            weeksCard.dataset.messageBound = 'true';
+        }
+    }
+
+    // Days message (sunrises and sunsets)
+    const daysMessageEl = document.getElementById('days-message');
+    if (daysMessageEl) {
+        const wholeDaysLeft = Math.max(0, Math.ceil(totalDaysRemainingExact));
+        if (wholeDaysLeft === 0) {
+            daysMessageEl.textContent = 'This is your last sunrise and sunset of the year.';
+        } else if (wholeDaysLeft === 1) {
+            daysMessageEl.textContent = 'You\'ll see 1 more sunrise and 1 more sunset.';
+        } else {
+            daysMessageEl.textContent = `You'll see ${wholeDaysLeft} more sunrises and sunsets.`;
+        }
+
+        const daysCard = document.querySelector('[data-card=\"days\"]');
+        if (daysCard && !daysCard.dataset.messageBound) {
+            daysCard.addEventListener('mouseenter', () => {
+                daysMessageEl.classList.add('is-visible');
+            });
+            daysCard.addEventListener('mouseleave', () => {
+                daysMessageEl.classList.remove('is-visible');
+            });
+            daysCard.dataset.messageBound = 'true';
+        }
+    }
+
+    // Hours message (sleep time)
+    const hoursMessageEl = document.getElementById('hours-message');
+    if (hoursMessageEl) {
+        const wholeDaysLeft = Math.max(0, Math.ceil(totalDaysRemainingExact));
+        const sleepHoursPerDay = 7;
+        const totalSleepHours = Math.round(wholeDaysLeft * sleepHoursPerDay);
+
+        if (wholeDaysLeft === 0) {
+            hoursMessageEl.textContent = 'Make every waking hour count.';
+        } else if (wholeDaysLeft === 1) {
+            hoursMessageEl.textContent = `At 7 hours of sleep per night, ${sleepHoursPerDay} of these hours will be spent sleeping.`;
+        } else {
+            hoursMessageEl.textContent = `At 7 hours of sleep per night, ${totalSleepHours.toLocaleString()} of these hours will be spent sleeping.`;
+        }
+
+        const hoursCard = document.querySelector('[data-card=\"hours\"]');
+        if (hoursCard && !hoursCard.dataset.messageBound) {
+            hoursCard.addEventListener('mouseenter', () => {
+                hoursMessageEl.classList.add('is-visible');
+            });
+            hoursCard.addEventListener('mouseleave', () => {
+                hoursMessageEl.classList.remove('is-visible');
+            });
+            hoursCard.dataset.messageBound = 'true';
+        }
+    }
+
     // Helper: create a split-flap style digit animation for a given container,
     // counting down from a start value string to an end value string.
     const applySplitFlap = (containerId, startValue, endValue) => {
