@@ -6,7 +6,8 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-    background-color: #f5f5f5;
+    /* Clean white background as requested */
+    background-color: #ffffff;
     color: #333;
     line-height: 1.6;
 }
@@ -19,11 +20,13 @@ body {
 
 /* Header Styles */
 .header {
-    margin-bottom: 80px;
+    /* Extra space below logo so it feels like a distinct icon/brand area */
+    margin-bottom: 120px;
 }
 
 .logo {
-    font-size: 24px;
+    /* Slightly smaller so it feels more like an app icon/logo than a big heading */
+    font-size: 18px;
     font-weight: 700;
     letter-spacing: 0.5px;
 }
@@ -38,7 +41,7 @@ body {
 }
 
 .logo-project {
-    color: #26D0AD;
+    color: #28BF85;
 }
 
 /* Main Content */
@@ -48,15 +51,17 @@ body {
 }
 
 .main-message {
-    font-size: 42px;
+    /* Sized to help the sentence sit on a single line on desktop */
+    font-size: 32px;
     font-weight: 700;
     line-height: 1.4;
-    margin-bottom: 80px;
+    /* Large block of space below "Today is..." before the cards */
+    margin-bottom: 140px;
     color: #000;
 }
 
 .main-message .highlight {
-    color: #26D0AD;
+    color: #28BF85;
 }
 
 /* Stats Grid */
@@ -64,12 +69,13 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 30px;
-    margin-top: 60px;
+    /* Less top margin so stats are pulled up closer to the main message */
+    margin-top: 20px;
 }
 
 .stat-card {
     background-color: #fff;
-    border: 3px solid #26D0AD;
+    border: 3px solid #28BF85;
     border-radius: 20px;
     padding: 40px 30px;
     text-align: left;
@@ -78,7 +84,7 @@ body {
 
 .stat-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(38, 208, 173, 0.2);
+    box-shadow: 0 10px 30px rgba(40, 191, 133, 0.2);
 }
 
 .stat-label {
@@ -91,15 +97,29 @@ body {
 .stat-value {
     font-size: 72px;
     font-weight: 700;
-    color: #26D0AD;
+    color: #28BF85;
     line-height: 1;
+}
+
+/* Make the decimal part visually smaller than the integer part */
+.stat-value .stat-int {
+    display: inline-block;
+}
+
+.stat-value .stat-decimal {
+    display: inline-block;
+    font-size: 0.5em; /* ~50% of the main number size */
+    /* Align with the bottom of the main number so it doesn't look like a superscript */
+    vertical-align: baseline;
+    margin-left: 2px;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
     .main-message {
-        font-size: 28px;
-        margin-bottom: 50px;
+        /* Slightly reduced on tablet to help keep it to one or two lines */
+        font-size: 26px;
+        margin-bottom: 32px;
     }
 
     .stats-grid {
@@ -122,7 +142,7 @@ body {
 
 @media (max-width: 480px) {
     .logo {
-        font-size: 20px;
+        font-size: 16px;
     }
 
     .main-message {
