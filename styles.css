@@ -19,11 +19,11 @@ body {
 
 /* Header Styles */
 .header {
-    margin-bottom: 80px;
+    margin-bottom: 200px;
 }
 
 .logo {
-    font-size: 24px;
+    font-size: 16px;
     font-weight: 700;
     letter-spacing: 0.5px;
 }
@@ -38,7 +38,7 @@ body {
 }
 
 .logo-project {
-    color: #26D0AD;
+    color: #28BF85;
 }
 
 /* Main Content */
@@ -48,7 +48,7 @@ body {
 }
 
 .main-message {
-    font-size: 42px;
+    font-size: 28px;
     font-weight: 700;
     line-height: 1.4;
     margin-bottom: 80px;
@@ -56,7 +56,7 @@ body {
 }
 
 .main-message .highlight {
-    color: #26D0AD;
+    color: #28BF85;
 }
 
 /* Stats Grid */
@@ -69,7 +69,7 @@ body {
 
 .stat-card {
     background-color: #fff;
-    border: 3px solid #26D0AD;
+    border: 3px solid #28BF85;
     border-radius: 20px;
     padding: 40px 30px;
     text-align: left;
@@ -78,7 +78,7 @@ body {
 
 .stat-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(38, 208, 173, 0.2);
+    box-shadow: 0 10px 30px rgba(40, 191, 133, 0.2);
 }
 
 .stat-label {
@@ -91,14 +91,14 @@ body {
 .stat-value {
     font-size: 72px;
     font-weight: 700;
-    color: #26D0AD;
+    color: #28BF85;
     line-height: 1;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
     .main-message {
-        font-size: 28px;
+        font-size: 22px;
         margin-bottom: 50px;
     }
 
@@ -122,11 +122,11 @@ body {
 
 @media (max-width: 480px) {
     .logo {
-        font-size: 20px;
+        font-size: 14px;
     }
 
     .main-message {
-        font-size: 22px;
+        font-size: 18px;
     }
 
     .stats-grid {
