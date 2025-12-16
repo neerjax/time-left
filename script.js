@@ -75,14 +75,14 @@ function updateTimeLeft() {
     // Weeks message (weekends remaining)
     const weeksMessageEl = document.getElementById('weeks-message');
     if (weeksMessageEl) {
-        const wholeWeeksLeft = Math.max(0, Math.ceil(totalWeeksRemainingExact));
-        const weekendsLeft = wholeWeeksLeft;
+        const weekendsLeft = Math.max(0, totalWeeksRemainingExact);
+        const weekendsDisplay = weekendsLeft.toFixed(1);
         if (weekendsLeft === 0) {
             weeksMessageEl.textContent = 'No full weekends left. Make today count.';
-        } else if (weekendsLeft === 1) {
-            weeksMessageEl.textContent = 'You have 1 more weekend to enjoy.';
+        } else if (weekendsLeft < 1) {
+            weeksMessageEl.textContent = `You have ${weekendsDisplay} weekends to enjoy.`;
         } else {
-            weeksMessageEl.textContent = `You have ${weekendsLeft} more weekends to enjoy.`;
+            weeksMessageEl.textContent = `You have ${weekendsDisplay} more weekends to enjoy.`;
         }
 
         const weeksCard = document.querySelector('[data-card=\"weeks\"]');
@@ -100,13 +100,14 @@ function updateTimeLeft() {
     // Days message (sunrises and sunsets)
     const daysMessageEl = document.getElementById('days-message');
     if (daysMessageEl) {
-        const wholeDaysLeft = Math.max(0, Math.ceil(totalDaysRemainingExact));
-        if (wholeDaysLeft === 0) {
+        const daysLeft = Math.max(0, totalDaysRemainingExact);
+        const daysDisplay = daysLeft.toFixed(1);
+        if (daysLeft === 0) {
             daysMessageEl.textContent = 'This is your last sunrise and sunset of the year.';
-        } else if (wholeDaysLeft === 1) {
-            daysMessageEl.textContent = 'You\'ll see 1 more sunrise and 1 more sunset.';
+        } else if (daysLeft < 1) {
+            daysMessageEl.textContent = `You'll see ${daysDisplay} more sunrises and sunsets.`;
         } else {
-            daysMessageEl.textContent = `You'll see ${wholeDaysLeft} more sunrises and sunsets.`;
+            daysMessageEl.textContent = `You'll see ${daysDisplay} more sunrises and sunsets.`;
         }
 
         const daysCard = document.querySelector('[data-card=\"days\"]');
@@ -124,16 +125,17 @@ function updateTimeLeft() {
     // Hours message (sleep time)
     const hoursMessageEl = document.getElementById('hours-message');
     if (hoursMessageEl) {
-        const wholeDaysLeft = Math.max(0, Math.ceil(totalDaysRemainingExact));
+        const daysLeft = Math.max(0, totalDaysRemainingExact);
         const sleepHoursPerDay = 7;
-        const totalSleepHours = Math.round(wholeDaysLeft * sleepHoursPerDay);
+        const totalSleepHours = daysLeft * sleepHoursPerDay;
+        const sleepHoursDisplay = totalSleepHours.toFixed(1);
 
-        if (wholeDaysLeft === 0) {
+        if (daysLeft === 0) {
             hoursMessageEl.textContent = 'Make every waking hour count.';
-        } else if (wholeDaysLeft === 1) {
-            hoursMessageEl.textContent = `At 7 hours of sleep per night, ${sleepHoursPerDay} of these hours will be spent sleeping.`;
+        } else if (daysLeft < 1) {
+            hoursMessageEl.textContent = `At 7 hours of sleep per night, ${sleepHoursDisplay} of these hours will be spent sleeping.`;
         } else {
-            hoursMessageEl.textContent = `At 7 hours of sleep per night, ${totalSleepHours.toLocaleString()} of these hours will be spent sleeping.`;
+            hoursMessageEl.textContent = `At 7 hours of sleep per night, ${sleepHoursDisplay} of these hours will be spent sleeping.`;
         }
 
         const hoursCard = document.querySelector('[data-card=\"hours\"]');
