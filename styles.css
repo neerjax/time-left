@@ -85,6 +85,17 @@ body {
 .stat-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 30px rgba(40, 191, 133, 0.2);
+    background-color: #28BF85;
+    border-color: #28BF85;
+}
+
+/* Ensure text flips to white on hover */
+.stat-card:hover .stat-label,
+.stat-card:hover .stat-value,
+.stat-card:hover .stat-value .stat-int,
+.stat-card:hover .stat-value .stat-decimal,
+.stat-card:hover .months-message {
+    color: #ffffff;
 }
 
 .stat-label {
@@ -112,6 +123,22 @@ body {
     /* Align with the bottom of the main number so it doesn't look like a superscript */
     vertical-align: baseline;
     margin-left: 2px;
+}
+
+/* Supporting message shown under the Months card */
+.months-message {
+    margin-top: 24px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #000000;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.months-message.is-visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 /* Responsive Design */

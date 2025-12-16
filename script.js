@@ -26,31 +26,146 @@ function updateTimeLeft() {
     const averageDaysPerMonth = 365.2425 / 12; // average month length
     const totalMonthsRemainingExact = totalDaysRemainingExact / averageDaysPerMonth;
 
+    // Full-year "max" values so counters can start from the top and count down
+    const totalDaysInYearExact = (endOfYear - startOfYear) / msInDay;
+    const totalWeeksInYearExact = totalDaysInYearExact / 7;
+    const totalHoursInYearExact = totalDaysInYearExact * 24;
+
     const monthsLeftDisplay = totalMonthsRemainingExact.toFixed(1);
     const weeksLeftDisplay = totalWeeksRemainingExact.toFixed(1);
     const daysLeftDisplay = totalDaysRemainingExact.toFixed(1);
     const hoursLeftDisplay = totalHoursRemainingExact.toFixed(1);
 
+    const monthsStartDisplay = (totalDaysInYearExact / averageDaysPerMonth).toFixed(1);
+    const weeksStartDisplay = totalWeeksInYearExact.toFixed(1);
+    const daysStartDisplay = totalDaysInYearExact.toFixed(1);
+    const hoursStartDisplay = totalHoursInYearExact.toFixed(1);
+
     // Update the main message (current date + % of year left)
     document.getElementById('current-date').textContent = formattedDate;
     document.getElementById('current-year').textContent = currentYear;
-    document.getElementById('percent-left').textContent = `${percentLeftDisplay}%`;
+    const percentLeftEl = document.getElementById('percent-left');
+    // Show percentage immediately (no animation for the headline)
+    percentLeftEl.textContent = `${percentLeftDisplay}%`;
 
-    // Helper to wrap decimal part in a smaller span
-    const formatWithDecimalSpan = (value) => {
-        const parts = value.split('.');
-        if (parts.length === 1) {
-            return value;
+    // Build a simple, region-agnostic message for the Months card
+    const monthsMessageEl = document.getElementById('months-message');
+    if (monthsMessageEl) {
+        const wholeMonthsLeft = Math.max(0, Math.ceil(totalMonthsRemainingExact));
+        if (wholeMonthsLeft === 0) {
+            monthsMessageEl.textContent = 'No full months left. Every day counts.';
+        } else if (wholeMonthsLeft === 1) {
+            monthsMessageEl.textContent = 'You have 1 more fresh start this year.';
+        } else {
+            monthsMessageEl.textContent = `You have ${wholeMonthsLeft} more fresh starts this year.`;
         }
-        const [intPart, decimalPart] = parts;
-        return `<span class="stat-int">${intPart}</span><span class="stat-decimal">.${decimalPart}</span>`;
+
+        const monthsCard = document.querySelector('[data-card=\"months\"]');
+        if (monthsCard && !monthsCard.dataset.messageBound) {
+            monthsCard.addEventListener('mouseenter', () => {
+                monthsMessageEl.classList.add('is-visible');
+            });
+            monthsCard.addEventListener('mouseleave', () => {
+                monthsMessageEl.classList.remove('is-visible');
+            });
+            monthsCard.dataset.messageBound = 'true';
+        }
+    }
+
+    // Helper: create a split-flap style digit animation for a given container,
+    // counting down from a start value string to an end value string.
+    const applySplitFlap = (containerId, startValue, endValue) => {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        container.innerHTML = '';
+
+        const [startIntRaw, startDecRaw = ''] = startValue.split('.');
+        const [endIntRaw, endDecRaw = ''] = endValue.split('.');
+
+        const intWrapper = document.createElement('span');
+        intWrapper.className = 'stat-int';
+
+        const decWrapper = document.createElement('span');
+        decWrapper.className = 'stat-decimal';
+
+        const makeDigit = (startChar, targetChar, wrapper, digitIndex) => {
+            // Non-numeric characters are rendered statically
+            if (!/^\d$/.test(targetChar)) {
+                const staticSpan = document.createElement('span');
+                staticSpan.textContent = targetChar;
+                wrapper.appendChild(staticSpan);
+                return;
+            }
+
+            const digitSpan = document.createElement('span');
+            digitSpan.textContent = startChar;
+            wrapper.appendChild(digitSpan);
+
+            const target = parseInt(targetChar, 10);
+            const totalFlips = 20 + Math.floor(Math.random() * 10); // more flips per digit for a slower feel
+            let flips = 0;
+            let current = parseInt(startChar, 10);
+
+            const startDelay = digitIndex * 120; // larger stagger per digit
+
+            setTimeout(() => {
+                const interval = setInterval(() => {
+                    digitSpan.textContent = String(current);
+
+                    if (flips >= totalFlips && current === target) {
+                        clearInterval(interval);
+                        return;
+                    }
+
+                    current = (current - 1 + 10) % 10; // 9→8→…→0→9…
+                    flips += 1;
+                }, 80); // slower tick speed
+            }, startDelay);
+        };
+
+        // Integer part digits (right-aligned so we don't introduce extra leading zeros)
+        const endInt = endIntRaw;
+        const intLen = endInt.length;
+        for (let i = 0; i < intLen; i++) {
+            const endChar = endInt[i];
+            const startIndexFromRight = startIntRaw.length - intLen + i;
+            const startChar =
+                startIndexFromRight >= 0
+                    ? startIntRaw[startIndexFromRight]
+                    : '9';
+            makeDigit(startChar, endChar, intWrapper, i);
+        }
+
+        container.appendChild(intWrapper);
+
+        // Decimal part digits (including the dot) if present
+        if (endDecRaw.length > 0) {
+            const dotSpan = document.createElement('span');
+            dotSpan.textContent = '.';
+            decWrapper.appendChild(dotSpan);
+
+            const decLen = endDecRaw.length;
+            for (let i = 0; i < decLen; i++) {
+                const endChar = endDecRaw[i];
+                const startIndexFromRight = startDecRaw.length - decLen + i;
+                const startChar =
+                    startIndexFromRight >= 0
+                        ? startDecRaw[startIndexFromRight]
+                        : '9';
+                makeDigit(startChar, endChar, decWrapper, i);
+            }
+
+            container.appendChild(decWrapper);
+        }
     };
 
-    // Update total stats cards (time left in the year) with styled decimals
-    document.getElementById('total-months').innerHTML = formatWithDecimalSpan(monthsLeftDisplay);
-    document.getElementById('total-weeks').innerHTML = formatWithDecimalSpan(weeksLeftDisplay);
-    document.getElementById('total-days').innerHTML = formatWithDecimalSpan(daysLeftDisplay);
-    document.getElementById('total-hours').innerHTML = formatWithDecimalSpan(hoursLeftDisplay);
+    // Apply split-flap style animation to all four stat cards,
+    // counting down from full-year values to the remaining values.
+    applySplitFlap('total-months', monthsStartDisplay, monthsLeftDisplay);
+    applySplitFlap('total-weeks', weeksStartDisplay, weeksLeftDisplay);
+    applySplitFlap('total-days', daysStartDisplay, daysLeftDisplay);
+    applySplitFlap('total-hours', hoursStartDisplay, hoursLeftDisplay);
 }
 
 // Update on page load
