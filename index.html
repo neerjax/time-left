@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Left - NEERJAX</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="logo">
+                <span class="logo-name">NEERJAX</span>
+                <span class="logo-separator">/</span>
+                <span class="logo-project">TIME-LEFT</span>
+            </h1>
+        </header>
+
+        <main class="main-content">
+            <h2 class="main-message">
+                Today is <span id="current-date">1 January 2026</span>, you still have
+                <span class="highlight" id="months-remaining">X</span> Months,
+                <span class="highlight" id="weeks-remaining">Y</span> weeks,
+                <span class="highlight" id="days-remaining">Z</span> Days left in <span id="current-year">2026</span>.
+            </h2>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3 class="stat-label">Total Months</h3>
+                    <p class="stat-value" id="total-months">12</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3 class="stat-label">Total Weeks</h3>
+                    <p class="stat-value" id="total-weeks">52</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3 class="stat-label">Total Days</h3>
+                    <p class="stat-value" id="total-days">364</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3 class="stat-label">Total Hours</h3>
+                    <p class="stat-value" id="total-hours">8760</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
